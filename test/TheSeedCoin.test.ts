@@ -83,6 +83,31 @@ describe("TheSeedCoin", function () {
 
     });
 
+    it("Should transfer from", async () => {
+      const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const balanceOwnerBefore = await theSeedCoin.balanceOf(owner.address);
+      const balanceOtherAccountBefore = await theSeedCoin.balanceOf(otherAccount.address);
+
+      await theSeedCoin.approve(otherAccount.address, 10n);
+
+      const instance = theSeedCoin.connect(otherAccount);
+      await instance.transferFrom(owner.address, otherAccount.address, 5n);
+
+      const balanceOwnerAfter = await theSeedCoin.balanceOf(owner.address);
+      const balanceOtherAccountrAfter = await theSeedCoin.balanceOf(otherAccount.address);
+
+      const allowance = await theSeedCoin.allowance(owner.address, otherAccount.address);
+
+      expect(balanceOwnerBefore).to.equal(1000000n * 10n ** 18n);
+      expect(balanceOwnerAfter).to.equal((1000000n * 10n ** 18n) - 5n);
+
+      expect(balanceOtherAccountBefore).to.equal(0);
+      expect(balanceOtherAccountrAfter).to.equal(5n);
+
+      expect(allowance).to.equal(5);
+
+    });
+
   });
 
 });
