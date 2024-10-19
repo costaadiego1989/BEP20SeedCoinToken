@@ -18,8 +18,20 @@ describe("SpiritCoin", function () {
     return { spiritCoin, owner, otherAccount };
   }
 
-  describe("", () => {
+  describe("Spirit Coin Tests", () => {
+
+    it("Should be a correct name", async () => {
+      const { spiritCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const name = await  spiritCoin.name();
+      expect(name).to.equal("Spirit Coin");
+    });
+
+    it("Should be a correct symbol", async () => {
+      const { spiritCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const symbol = await  spiritCoin.symbol();
+      expect(symbol).to.equal("SPT");
+    });
 
   });
 
-})
+});
