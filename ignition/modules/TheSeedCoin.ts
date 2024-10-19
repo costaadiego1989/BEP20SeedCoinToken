@@ -3,10 +3,10 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-const SpiritCoin = buildModule("SpiritCoin", (m) => {
-  const lock = m.contract("Lock", [], { });
+const TheSeedCoin = buildModule("TheSeedCoin", (m) => {
+  const theSeedCoin = m.contract("TheSeedCoin", [], { });
 
-  return { lock };
+  return { theSeedCoin };
 });
 
-export default SpiritCoin;
+export default TheSeedCoin;
