@@ -70,10 +70,16 @@ describe("SpiritCoin", function () {
 
     it("Should NOT transfer", async () => {
       const { spiritCoin, owner, otherAccount } = await loadFixture(deployFixture);
-
       const instance = spiritCoin.connect(otherAccount);
-
       await expect(instance.transfer(owner, 1n)).to.revertedWith("Insufficient balance");
+
+    });
+
+    it("Should approve", async () => {
+      const { spiritCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      await spiritCoin.approve(otherAccount, 1n);
+      const value = await spiritCoin.allowance(owner, otherAccount);
+      expect(value).to.equal(1n);
 
     });
 
