@@ -32,6 +32,18 @@ describe("SpiritCoin", function () {
       expect(symbol).to.equal("SPT");
     });
 
+    it("Should be a correct decimals", async () => {
+      const { spiritCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const decimals = await  spiritCoin.decimals();
+      expect(decimals).to.equal(18);
+    });
+
+    it("Should be a correct totalSupply", async () => {
+      const { spiritCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const totalSupply = await  spiritCoin.totalSupply();
+      expect(totalSupply).to.equal(1000000n * 10n ** 18n);
+    });
+
   });
 
 });
