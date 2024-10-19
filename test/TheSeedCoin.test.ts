@@ -134,6 +134,18 @@ describe("TheSeedCoin", function () {
 
     });
 
+    it("Should NOT be mint (NOT Owner)", async () => {
+      const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
+
+     const mintAmount = 10000n;
+     await theSeedCoin.setMintingAmount(mintAmount);
+     
+      const instance = theSeedCoin.connect(otherAccount);
+
+      await expect(instance.mint()).to.revertedWith("You don't have permission");
+
+    });
+
   });
 
 });
