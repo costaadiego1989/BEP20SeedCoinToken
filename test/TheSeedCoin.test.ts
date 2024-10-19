@@ -115,6 +115,13 @@ describe("TheSeedCoin", function () {
 
     });
 
+    it("Should NOT transfer from (allowance)", async () => {
+      const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const instance = theSeedCoin.connect(otherAccount);
+      await expect(instance.transferFrom(owner.address, otherAccount.address, 1n)).to.revertedWith("Insufficient allowance");
+
+    });
+
   });
 
 });
