@@ -44,6 +44,14 @@ describe("SpiritCoin", function () {
       expect(totalSupply).to.equal(1000000n * 10n ** 18n);
     });
 
+    it("Should get a balance", async () => {
+      const { spiritCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const balance = await spiritCoin.balanceOf(owner.address);
+      expect(balance).to.equal(1000000n * 10n ** 18n);
+    });
+
+
+
   });
 
 });
