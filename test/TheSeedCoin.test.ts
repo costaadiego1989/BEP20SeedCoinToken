@@ -108,6 +108,13 @@ describe("TheSeedCoin", function () {
 
     });
 
+    it("Should NOT transfer from (balance)", async () => {
+      const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const instance = theSeedCoin.connect(otherAccount);
+      await expect(instance.transferFrom(otherAccount.address, otherAccount.address, 1n)).to.revertedWith("Insufficient balance");
+
+    });
+
   });
 
 });
