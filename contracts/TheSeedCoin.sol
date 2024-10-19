@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract TheSeedCoin is ERC20 {
 
     address private owner;
-    uint256 mintAmount;
+    uint256 public mintAmount;
     uint64 private mintDelay =  60 * 60 * 24;
 
     mapping(address => uint256) public nextMint;
@@ -22,7 +22,7 @@ contract TheSeedCoin is ERC20 {
         nextMint[owner] = block.timestamp + mintDelay;
     }
 
-    function setMinting(uint256 _newValue) public restricted {
+    function setMintingAmount(uint256 _newValue) public restricted {
         mintAmount = _newValue;
     }
 

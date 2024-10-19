@@ -122,6 +122,18 @@ describe("TheSeedCoin", function () {
 
     });
 
+    it("Should be mint", async () => {
+      const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const balanceBefore = await theSeedCoin.balanceOf(owner);
+
+      await theSeedCoin.setMintingAmount(10000n);
+      await theSeedCoin.mint();
+
+      const balanceAfter = await theSeedCoin.balanceOf(owner);
+      expect(balanceAfter).to.equal(balanceBefore + BigInt(10000));
+
+    });
+
   });
 
 });
