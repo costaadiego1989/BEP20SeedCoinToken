@@ -146,6 +146,42 @@ describe("TheSeedCoin", function () {
 
     });
 
+    it("Should be mint in different moments", async () => {
+      const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
+
+      const mintAmount = 10000n;
+      await theSeedCoin.setMintingAmount(mintAmount);
+
+      const balanceBefore = await theSeedCoin.balanceOf(owner.address);
+      await theSeedCoin.mint();
+
+      const mintDelay = 60 * 60 * 24 * 2;
+      await time.increase(mintDelay);
+
+      await theSeedCoin.mint();
+      const balanceAfter = await theSeedCoin.balanceOf(owner.address);
+
+      expect(balanceAfter).to.equal(balanceBefore + (mintAmount * 2n));
+
+    });
+
+    it("Should NOT be mint if no equal mintDelay", async () => {
+      const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
+
+      const mintAmount = 10000n;
+      await theSeedCoin.setMintingAmount(mintAmount);
+
+      await theSeedCoin.mint();
+
+      const mintDelay = 60 * 60 * 23 * 2;
+      await time.increase(mintDelay);
+
+      const mint = await theSeedCoin.mint();
+
+      expect(mint).to.revertedWith("You don't mint twice in a row");
+
+    });
+
   });
 
 });
