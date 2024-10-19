@@ -23,7 +23,7 @@ describe("TheSeedCoin", function () {
     it("Should be a correct name", async () => {
       const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
       const name = await  theSeedCoin.name();
-      expect(name).to.equal("The Seeds");
+      expect(name).to.equal("Seed Coin");
     });
 
     it("Should be a correct symbol", async () => {
@@ -71,7 +71,7 @@ describe("TheSeedCoin", function () {
     it("Should NOT transfer", async () => {
       const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
       const instance = theSeedCoin.connect(otherAccount);
-      await expect(instance.transfer(owner, 1n)).to.revertedWith("Insufficient balance");
+      await expect(instance.transfer(owner, 1n)).to.revertedWithCustomError(theSeedCoin, "ERC20InsufficientBalance");
 
     });
 
@@ -111,14 +111,14 @@ describe("TheSeedCoin", function () {
     it("Should NOT transfer from (balance)", async () => {
       const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
       const instance = theSeedCoin.connect(otherAccount);
-      await expect(instance.transferFrom(otherAccount.address, otherAccount.address, 1n)).to.revertedWith("Insufficient balance");
+      await expect(instance.transferFrom(otherAccount.address, otherAccount.address, 1n)).to.revertedWithCustomError(theSeedCoin, "ERC20InsufficientAllowance");
 
     });
 
     it("Should NOT transfer from (allowance)", async () => {
       const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
       const instance = theSeedCoin.connect(otherAccount);
-      await expect(instance.transferFrom(owner.address, otherAccount.address, 1n)).to.revertedWith("Insufficient allowance");
+      await expect(instance.transferFrom(owner.address, otherAccount.address, 1n)).to.revertedWithCustomError(theSeedCoin, "ERC20InsufficientAllowance");
 
     });
 

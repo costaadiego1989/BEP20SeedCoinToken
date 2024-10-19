@@ -6,7 +6,7 @@
     "start": "npx hadrhat node",
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
-        "deploy:dev": "npx hardhat ignition deploy ignition/modules/TheSeedCoin.ts --network local",
+    "deploy:dev": "npx hardhat ignition deploy ignition/modules/TheSeedCoin.ts --network local",
     "deploy:prod": "npx hardhat ignition deploy ignition/modules/TheSeedCoin.ts --network sepolia"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
     "hardhat": "^2.22.13"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0",
     "dotenv": "^16.4.5"
   }
 }

@@ -1,61 +1,38 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.27;
+pragma solidity 0.8.27;
 
-contract TheSeedCoin {
-    
-    string public name = "The Seeds";
-    string public symbol = "SDS";
-    uint8 public decimals = 18;
-    uint256 public totalSupply = 1000000 * 10 ** decimals;
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-    event Transfer(address indexed _from, address indexed _to, uint256 _value);
-    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
+contract TheSeedCoin is ERC20 {
 
-    mapping(address => uint256) public _balances;
-    mapping(address => mapping(address => uint256)) public _allowances;
+    address private owner;
+    uint256 mintAmount;
+    uint64 private mintDelay =  60 * 60 * 24;
 
-    constructor() {
-        _balances[msg.sender] = totalSupply;
+    mapping(address => uint256) public nextMint;
+
+    constructor() ERC20("Seed Coin", "SDS") {
+        owner = msg.sender;
+        _mint(msg.sender, 1000000 * 10 ** 18);
     }
 
-    function balanceOf(address _owner) public view returns (uint256) {
-        return _balances[_owner];
+    function mint() public restricted {
+        require(block.timestamp > nextMint[owner], "You don't mint twice in a row");
+        _mint(owner, mintAmount);
+        nextMint[owner] = block.timestamp + mintDelay;
     }
 
-    function transfer(address _to, uint256 _value) public returns (bool) {
-        require(balanceOf(msg.sender) >= _value, "Insufficient balance");
-
-        _balances[msg.sender] -= _value;
-        _balances[_to] += _value;
-
-        emit Transfer(msg.sender, _to, _value);
-
-        return true;
+    function setMinting(uint256 _newValue) public restricted {
+        mintAmount = _newValue;
     }
 
-    function approve(address _spender, uint256 _value) public returns (bool success) {
-        _allowances[msg.sender][_spender] = _value;
-
-        emit Approval(msg.sender, _spender, _value);
-
-        return true;
+    function setMintingDelay(uint64 _delayInSeconds) public restricted {
+        mintDelay = _delayInSeconds;
     }
 
-    function allowance(address _owner, address _spender) public view returns (uint256 remaining) {
-        return _allowances[_owner][_spender];
-    }
-
-    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
-        require(balanceOf(_from) >= _value, "Insufficient balance");
-        require(allowance(_from, msg.sender) >= _value, "Insufficient allowance");
-
-        _balances[_from] -= _value;
-        _allowances[_from][msg.sender] -= _value;
-        _balances[_to] += _value;
-
-        emit Transfer(_from, _to, _value);
-
-        return true;
+    modifier restricted() {
+        require(owner == msg.sender, "You don't have permission");
+        _;
     }
 
 }
