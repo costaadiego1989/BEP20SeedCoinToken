@@ -50,7 +50,23 @@ describe("SpiritCoin", function () {
       expect(balance).to.equal(1000000n * 10n ** 18n);
     });
 
+    it("Should transfer", async () => {
+      const { spiritCoin, owner, otherAccount } = await loadFixture(deployFixture);
+      const balanceOwnerBefore = await spiritCoin.balanceOf(owner.address);
+      const balanceOtherAccountBefore = await spiritCoin.balanceOf(otherAccount.address);
 
+      await spiritCoin.transfer(otherAccount.address, 1n);
+
+      const balanceOwnerAfter = await spiritCoin.balanceOf(owner.address);
+      const balanceOtherAccountrAfter = await spiritCoin.balanceOf(otherAccount.address);
+
+      expect(balanceOwnerBefore).to.equal(1000000n * 10n ** 18n);
+      expect(balanceOwnerAfter).to.equal((1000000n * 10n ** 18n) - 1n);
+
+      expect(balanceOtherAccountBefore).to.equal(0);
+      expect(balanceOtherAccountrAfter).to.equal(1n);
+
+    });
 
   });
 
