@@ -68,6 +68,15 @@ describe("SpiritCoin", function () {
 
     });
 
+    it("Should NOT transfer", async () => {
+      const { spiritCoin, owner, otherAccount } = await loadFixture(deployFixture);
+
+      const instance = spiritCoin.connect(otherAccount);
+
+      await expect(instance.transfer(owner, 1n)).to.revertedWith("Insufficient balance");
+
+    });
+
   });
 
 });
