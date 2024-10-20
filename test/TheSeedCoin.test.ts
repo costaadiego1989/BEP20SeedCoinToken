@@ -191,6 +191,26 @@ describe("TheSeedCoin", function () {
 
     });
 
+    it("Should NOT set mint delay", async () => {
+      const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
+
+      const instance = theSeedCoin.connect(otherAccount)
+
+      await expect(instance.setMintingDelay(60 * 60 * 24)).to.revertedWith("You don't have permission");
+
+    });
+
+    
+    it("Should NOT mint twice", async () => {
+      const { theSeedCoin, owner, otherAccount } = await loadFixture(deployFixture);
+
+      await theSeedCoin.setMintingAmount(10000n);
+      await theSeedCoin.mint();
+
+      await expect(theSeedCoin.mint()).to.revertedWith("You don't mint twice in a row");
+
+    });
+
   });
 
 });
